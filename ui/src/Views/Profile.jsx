@@ -61,7 +61,7 @@ function Profile() {
 			<form onSubmit={handleSubmit} className="profile-form">
 				{Object.entries(labelMap).map(([labelKey, labelValue]) => (
 					<div key={labelKey} className="form-group">
-						<label htmlFor={labelKey}>{labelMap[key] || key.replace('_', ' ')}</label>						
+						<label htmlFor={labelKey}>{labelMap[labelKey] || labelKey.replace('_', ' ')}</label>						
 							<input
 								type="text"
 								id={labelKey}

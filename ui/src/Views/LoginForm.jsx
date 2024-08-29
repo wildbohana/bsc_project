@@ -18,7 +18,7 @@ function LoginForm() {
 		};
 
 		// TODO change completely
-		axiosInstance.post("/auth/login", loginData)
+		axiosInstance.post("/login", loginData)
 			.then(response => {
 				const token = response.data;
 				Cookies.set('jwt-token', token, { expires: 7, secure: true, sameSite: 'Strict' });

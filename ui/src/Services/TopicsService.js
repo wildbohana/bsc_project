@@ -2,15 +2,15 @@ import { AxiosClient } from "./AxiosClient";
 
 // Promeni apsolutno sve
 
-// Get post
-export const GetPostAsync = async (id) => {
+// Get topic
+export const GetTopicAsync = async (id) => {
 	return await AxiosClient.get(
 		`${process.env.REACT_APP_API_URL}/post/get-post?postId=${id}`
 	);
 };
 
-// New post
-export const CreateNewPostAsync = async (data) => {
+// New topic
+export const CreateNewTopicAsync = async (data) => {
 	return await AxiosClient.post(
 		`${process.env.REACT_APP_API_URL}/post/new-post`
 	);

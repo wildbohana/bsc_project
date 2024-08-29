@@ -21,12 +21,16 @@ jwt = JWTManager(app)
 
 #mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
 #client = MongoClient(mongo_uri)
+
 client = MongoClient('mongo-service', 27017)
-#db_credentials = client.credentials
-#db_profiles = client.profiles
-db = client.get_default_database()
-user_credentials = db["user_credentials"]
-user_profiles = db["user_profiles"]
+
+# MONGO URI in KUBERNETES POD: 
+# mongodb+srv://<username>:<password>@example-mongodb-svc.mongodb.svc.cluster.local/admin?ssl=true);
+
+db_credentials = client.credentials
+db_profiles = client.profiles
+user_credentials = db_credentials["user_credentials"]
+user_profiles = db_profiles["user_profiles"]
 
 
 # REGISTER USER
@@ -46,6 +50,7 @@ def register():
     city = request.json['city']
     phone = request.json['phone']
 
+	# TIMEOUT ERROR (NAPREDAK !!!)
     if user_credentials.find_one({"email": email}):
         return jsonify({"error": "Email already registered"}), 400
 

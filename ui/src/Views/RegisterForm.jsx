@@ -30,7 +30,8 @@ function RegisterForm() {
 
 		try {
 			// TODO promeniti ???
-			const response = await axiosInstance.post("auth/register", {...userData});
+			const response = await axiosInstance.post("/register", {...userData});
+			console.log(response.data.message)
 			navigate("/login")
 		} catch (error) {
 			console.error("There was an error!", error);

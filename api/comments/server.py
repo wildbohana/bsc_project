@@ -22,9 +22,8 @@ jwt = JWTManager(app)
 #mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
 #client = MongoClient(mongo_uri)
 client = MongoClient('mongo-service', 27017)
-#db_comments = client.comments
-db = client.get_default_database()
-comments = db["comments"]
+db_comments = client.comments
+comments = db_comments["comments"]
 
 
 # UPVOTE
@@ -133,7 +132,6 @@ def comment_add():
     #         if "email" in profile:
     #             executor.submit(send_email, profile["email"], topic["title"], comment["content"], comment["ownerFullName"])
 
-
     if comment is not None:
         return jsonify({"message": "Comment created", "comment": serialize_doc(comment)}), 200
     else:
@@ -151,7 +149,6 @@ def get_all_comments_for_topic(topic_id):
         return jsonify({"message": "Topics fetched", "comments": comments_list}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # TODO comment delete
 

@@ -22,9 +22,8 @@ jwt = JWTManager(app)
 #mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
 #client = MongoClient(mongo_uri)
 client = MongoClient('mongo-service', 27017)
-#db_topic = client.topics
-db = client.get_default_database()
-topics = db["topics"]
+db_topic = client.topics
+topics = db_topic["topics"]
 
 
 # CREATE NEW TOPIC
