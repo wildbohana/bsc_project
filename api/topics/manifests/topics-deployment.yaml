@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: topics-deploy
+  labels:
+    app: topics
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: topics
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: topics
+    spec:
+      containers:
+        - name: topics-cont
+          image: wildbohana/topics
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: topics-configmap
+            - secretRef:
+                name: topics-secret

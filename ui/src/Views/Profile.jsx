@@ -17,8 +17,8 @@ function Profile() {
 
 	useEffect(() => {
 		axiosInstance.get('/profile').then(response => {
-			setProfile(response.data);
-			console.log(response.data);
+			setProfile(response.data["profile"]);
+			console.log(response.data["profile"]);
 		}).catch(error => {
 			console.error("Error fetching profile: ", error);
 			toast("Error fetching profile");

@@ -13,25 +13,15 @@ from helpers import serialize_doc
 
 
 app = Flask(__name__)
-
-# TODO get app.configs from os.environ (jer su u secrets fajlu)
-#app.config["MONGO_URI_CRED"] = "mongodb://host.minikube.internal/27017/user_credentials"
-#app.config["MONGO_URI_PROF"] = "mongodb://host.minikube.internal/27017/user_profiles"
-#app.config['JWT_SECRET_KEY'] = 'superSecretJwtKey'
 app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET")
-
-# MONGO URI in KUBERNETES POD: 
-# mongodb+srv://<username>:<password>@example-mongodb-svc.mongodb.svc.cluster.local/admin?ssl=true);
 
 # CORS and JWT
 CORS(app)
 jwt = JWTManager(app)
 
-#mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
-#client = MongoClient(mongo_uri)
-
+# MongoDB connection
 client = MongoClient('mongo-service', 27017)
-
+#client = MongoClient("host.minikube.internal", 27017)
 db_credentials = client.credentials
 db_profiles = client.profiles
 user_credentials = db_credentials["user_credentials"]
@@ -55,7 +45,6 @@ def register():
     city = request.json['city']
     phone = request.json['phone']
 
-	# TIMEOUT ERROR (NAPREDAK !!!)
     if user_credentials.find_one({"email": email}):
         return jsonify({"error": "Email already registered"}), 400
 
@@ -76,6 +65,9 @@ def register():
         "city": city,
         "phone": phone
     })
+    
+    if not user_profiles.find_one({"email": email}):
+        return jsonify({"error": "Failed to insert to db"}), 400
 
     return jsonify({"message": "User created successfully", "user_id": str(user_id)}), 201
 
@@ -101,7 +93,12 @@ def login():
             additional_claims={"email": email, "full_name": user_details['first_name'] + " " + user_details['last_name']},
             expires_delta=expires
         )
-        return jsonify(access_token=access_token), 200
+        
+        if access_token is not None:
+            return jsonify(access_token=access_token), 200
+        else:
+            return jsonify({"error creating access token": str(e)}), 400            
+        
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 

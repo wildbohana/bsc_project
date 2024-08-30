@@ -5,19 +5,20 @@ from jsonschema import validate, ValidationError
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_cors import CORS
 import datetime
+import os
 
 from schemas import comment_id_only_schema, create_comment_schema
 from helpers import serialize_doc
 
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET")
 
-app.config['JWT_SECRET_KEY'] = 'superSecretJwtKey'
+# CORS and JWT
 CORS(app)
 jwt = JWTManager(app)
 
-#mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
-#client = MongoClient(mongo_uri)
+# MongoDB connection
 client = MongoClient('mongo-service', 27017)
 db_comments = client.comments
 comments = db_comments["comments"]

@@ -20,8 +20,9 @@ function LoginForm() {
 		// TODO change completely
 		axiosInstance.post("/login", loginData)
 			.then(response => {
-				const token = response.data;
+				const token = response.data["access_token"];
 				Cookies.set('jwt-token', token, { expires: 7, secure: true, sameSite: 'Strict' });
+				
 				navigate('/');
 			})
 			.catch(error => {

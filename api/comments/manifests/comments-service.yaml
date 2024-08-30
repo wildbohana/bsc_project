@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments
+spec:
+  selector:
+    app: comments
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
