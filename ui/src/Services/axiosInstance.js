@@ -4,9 +4,11 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const url = "http://127.0.0.1";
+//const url = "http://127.0.0.1";
+//const url = "http://10.244.0.7";
+const url = "http://discusswithme.com"
 const port = "5000";
-const usePort = true;
+const usePort = false;
 
 const axiosInstance = axios.create({
 	baseURL: url + (usePort ? `:${port}` : ''),

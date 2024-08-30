@@ -1,13 +1,10 @@
 from flask import Flask, jsonify, request, json
 from pymongo import MongoClient
-from werkzeug.security import generate_password_hash,check_password_hash
 from bson import ObjectId
 from jsonschema import validate, ValidationError
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token,get_jwt_identity, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_cors import CORS
 import datetime
-import os
-from datetime import timedelta
 
 from schemas import topic_create_schema, topic_id_only_schema
 from helpers import transform_doc_to_user 
@@ -52,7 +49,6 @@ def topic_create():
         "locked": False,
         "subscribers": [],
         "createdAt": datetime.datetime.now(),
-        "numOfComments": 0,
         "numOfUpvotes": 0,
         "numOfDownvotes": 0,
         "upvotedBy": [],

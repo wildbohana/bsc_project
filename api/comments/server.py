@@ -1,13 +1,10 @@
 from flask import Flask, jsonify, request, json
 from pymongo import MongoClient
-from werkzeug.security import generate_password_hash,check_password_hash
 from bson import ObjectId
 from jsonschema import validate, ValidationError
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token,get_jwt_identity, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_cors import CORS
 import datetime
-import os
-from datetime import timedelta
 
 from schemas import comment_id_only_schema, create_comment_schema
 from helpers import serialize_doc
@@ -97,12 +94,8 @@ def comment_add():
     user_id = get_jwt_identity()
     topicId = request.json['topicId']
     content = request.json['content']
-    topic = topics.find_one({"_id": ObjectId(topicId)})		# TODO fix topics
     jwt_data = get_jwt()
     claims_full_name = jwt_data["full_name"]
-
-    if topic and topic.get("locked") == True:
-        return jsonify({"message": "This topic is locked"}), 400
 
     comment = {
         "content": content,
@@ -118,10 +111,7 @@ def comment_add():
     }
 
     insert_result = comments.insert_one(comment)
-    
     comment_id = insert_result.inserted_id
-    topics.update_one({"_id": ObjectId(topicId)}, {"$inc": {"numOfComments": 1}})	# TODO fix topics
-
     comment = comments.find_one({"_id": comment_id})
 
     # if "subscribers" in topic and topic["subscribers"]:

@@ -154,7 +154,6 @@ function TopicPage() {
 				<p className="topic-info">Owner: {topic.ownerFullName}</p>
 				<p className="topic-info">Upvotes: {topic.numOfUpvotes} | Downvotes: {topic.numOfDownvotes}</p>
 				<p className="topic-info">Locked: {topic.locked ? 'Yes' : 'No'}</p>
-				<p className="topic-info">Comments: {topic.numOfComments}</p>
 				<div>
 					<button className={`vote-button ${topic.userAction === 'UPVOTED' ? 'active-upvote-button' : ''}`}
 							onClick={() => handleTopicAction(topic._id, "upvote")}>

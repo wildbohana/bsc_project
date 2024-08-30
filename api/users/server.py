@@ -3,11 +3,10 @@ from pymongo import MongoClient
 from werkzeug.security import generate_password_hash,check_password_hash
 from bson import ObjectId
 from jsonschema import validate, ValidationError
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token,get_jwt_identity, get_jwt
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_jwt
 from flask_cors import CORS
-import datetime
-import os
 from datetime import timedelta
+import os
 
 from schemas import user_login_schema, user_registration_schema
 from helpers import serialize_doc 
@@ -15,7 +14,16 @@ from helpers import serialize_doc
 
 app = Flask(__name__)
 
-app.config['JWT_SECRET_KEY'] = 'superSecretJwtKey'
+# TODO get app.configs from os.environ (jer su u secrets fajlu)
+#app.config["MONGO_URI_CRED"] = "mongodb://host.minikube.internal/27017/user_credentials"
+#app.config["MONGO_URI_PROF"] = "mongodb://host.minikube.internal/27017/user_profiles"
+#app.config['JWT_SECRET_KEY'] = 'superSecretJwtKey'
+app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET")
+
+# MONGO URI in KUBERNETES POD: 
+# mongodb+srv://<username>:<password>@example-mongodb-svc.mongodb.svc.cluster.local/admin?ssl=true);
+
+# CORS and JWT
 CORS(app)
 jwt = JWTManager(app)
 
@@ -23,9 +31,6 @@ jwt = JWTManager(app)
 #client = MongoClient(mongo_uri)
 
 client = MongoClient('mongo-service', 27017)
-
-# MONGO URI in KUBERNETES POD: 
-# mongodb+srv://<username>:<password>@example-mongodb-svc.mongodb.svc.cluster.local/admin?ssl=true);
 
 db_credentials = client.credentials
 db_profiles = client.profiles

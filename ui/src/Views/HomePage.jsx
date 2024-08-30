@@ -153,7 +153,6 @@ function HomePage() {
 						<option value="">Default</option>
 						<option value="numOfUpvotes">Upvotes</option>
 						<option value="numOfDownvotes">Downvotes</option>
-						<option value="numOfComments">Comments</option>
 					</select>
 				</div>
 			</div>
@@ -168,7 +167,6 @@ function HomePage() {
 					<p className="topic-info">Owner: {topic.ownerFullName}</p>
 					<p className="topic-info">Upvotes: {topic.numOfUpvotes} | Downvotes: {topic.numOfDownvotes}</p>
 					<p className="topic-info">Locked: {topic.locked ? 'Yes' : 'No'}</p>
-					<p className="topic-info">Comments: {topic.numOfComments}</p>
 
 					<div>
 						<button className={`vote-button ${topic.userAction === 'UPVOTED' ? 'active-upvote-button' : ''}`}
