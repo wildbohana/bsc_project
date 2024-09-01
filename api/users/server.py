@@ -29,7 +29,7 @@ user_profiles = db_profiles["user_profiles"]
 
 
 # REGISTER USER
-@app.route('/register', methods=['POST'])
+@app.route('/users/register/', methods=['POST'])
 def register():
     try:
         validate(instance=request.json, schema=user_registration_schema)
@@ -72,7 +72,7 @@ def register():
     return jsonify({"message": "User created successfully", "user_id": str(user_id)}), 201
 
 # LOGIN USER
-@app.route('/login', methods=['POST'])
+@app.route('/users/login/', methods=['POST'])
 def login():
     try:
         validate(instance=request.json, schema=user_login_schema)
@@ -103,7 +103,7 @@ def login():
         return jsonify({"error": "Invalid credentials"}), 401
 
 # GET USER PROFILE
-@app.route('/profile', methods=['GET'])
+@app.route('/users/profile/', methods=['GET'])
 @jwt_required()
 def get_profile():
     try:
@@ -117,7 +117,7 @@ def get_profile():
         return jsonify({"error": str(e)}), 500
 
 # UPDATE USER PROFILE
-@app.route('/profile', methods=['POST'])
+@app.route('/users/profile/', methods=['POST'])
 @jwt_required()
 def update_profile():
     try:

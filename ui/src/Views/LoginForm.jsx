@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import axiosInstance from '../Services/axiosInstance';
@@ -17,16 +18,15 @@ function LoginForm() {
 			password: pass
 		};
 
-		// TODO change completely
-		axiosInstance.post("/login", loginData)
+		axiosInstance.post("/users/login", loginData)
 			.then(response => {
 				const token = response.data["access_token"];
 				Cookies.set('jwt-token', token, { expires: 7, secure: true, sameSite: 'Strict' });
-				
 				navigate('/');
 			})
 			.catch(error => {
 				console.error('Error during login:', error);
+				toast(error.message)
 			});
 	}
 

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: comments-cont
-          image: wildbohana/comments
+          image: wildbohana/comments:1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

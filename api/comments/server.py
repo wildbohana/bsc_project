@@ -25,7 +25,7 @@ comments = db_comments["comments"]
 
 
 # UPVOTE
-@app.route('/comments/upvote', methods=['POST'])
+@app.route('/comments/upvote/', methods=['POST'])
 @jwt_required()
 def comment_upvote():
 
@@ -56,7 +56,7 @@ def comment_upvote():
         return jsonify({"message": "Comment not found"}), 404
 
 # DOWNVOTE
-@app.route('/comments/downvote', methods=['POST'])
+@app.route('/comments/downvote/', methods=['POST'])
 @jwt_required()
 def comment_downvote():
 
@@ -89,7 +89,7 @@ def comment_downvote():
         return jsonify({"message": "Comment not found"}), 404
 
 # ADD COMMENT TO TOPIC
-@app.route('/comments/add', methods=['POST'])
+@app.route('/comments/add/', methods=['POST'])
 @jwt_required()
 def comment_add():
     user_id = get_jwt_identity()
@@ -129,7 +129,7 @@ def comment_add():
         return jsonify({"error": "Comment was not found after insertion"}), 500
 
 # GET COMMENTS FOR TOPIC
-@app.route('/comments/<topic_id>', methods=['GET'])
+@app.route('/comments/<topic_id>/', methods=['GET'])
 @jwt_required()
 def get_all_comments_for_topic(topic_id):
     try:

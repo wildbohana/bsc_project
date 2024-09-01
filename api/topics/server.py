@@ -25,7 +25,7 @@ topics = db_topic["topics"]
 
 
 # CREATE NEW TOPIC
-@app.route('/topic/create', methods=['POST'])
+@app.route('/topics/create/', methods=['POST'])
 @jwt_required()
 def topic_create():
 
@@ -59,7 +59,7 @@ def topic_create():
     return jsonify({"message": "Topic Created"}), 200
 
 # SUBSCRIBE TO TOPIC
-@app.route('/topic/subscribe', methods=['POST'])
+@app.route('/topics/subscribe/', methods=['POST'])
 @jwt_required()
 def topic_subscribe():
 
@@ -86,7 +86,7 @@ def topic_subscribe():
         return jsonify({"message": "Topic not found"}), 404
 
 # LOCK TOPIC
-@app.route('/topic/lock', methods=['POST'])
+@app.route('/topics/lock/', methods=['POST'])
 @jwt_required()
 def topic_lock():
 
@@ -113,7 +113,7 @@ def topic_lock():
         return jsonify({"message": "Topic not found"}), 404
 
 # DELETE TOPIC (if you are owner)
-@app.route('/topic/delete', methods=['POST'])
+@app.route('/topics/delete/', methods=['POST'])
 @jwt_required()
 def topic_delete():
 
@@ -134,7 +134,7 @@ def topic_delete():
         return jsonify({"message": "You can only delete your topics"}), 403
 
 # UPVOTE TOPIC
-@app.route('/topic/upvote', methods=['POST'])
+@app.route('/topics/upvote/', methods=['POST'])
 @jwt_required()
 def topic_upvote():
 
@@ -165,7 +165,7 @@ def topic_upvote():
         return jsonify({"message": "Topic not found"}), 404
 
 # DOWNVOTE TOPIC
-@app.route('/topic/downvote', methods=['POST'])
+@app.route('/topics/downvote/', methods=['POST'])
 @jwt_required()
 def topic_downvote():
 
@@ -197,7 +197,7 @@ def topic_downvote():
         return jsonify({"message": "Topic not found"}), 404
 
 # GET ALL TOPICS
-@app.route('/topics', methods=['GET'])
+@app.route('/topics/all/', methods=['GET'])
 @jwt_required()
 def get_all_topics():
     try:
@@ -210,7 +210,7 @@ def get_all_topics():
         return jsonify({"error": str(e)}), 500
 
 # GET SPECIFIED TOPIC
-@app.route('/topic/<topic_id>', methods=['GET'])
+@app.route('/topics/<topic_id>/', methods=['GET'])
 @jwt_required()
 def get_single_topic(topic_id):
     try:

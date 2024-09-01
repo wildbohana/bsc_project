@@ -20,10 +20,7 @@ function CreateTopic() {
 		};
 
 		try {
-			const response = await axiosInstance.post("/topic/create", payload);
-			//console.log('RESPONSE');
-			//console.log(response);
-			//console.log(response.status);
+			const response = await axiosInstance.post("/topics/create", payload);
 			if (response.status === 200) {
 				navigate("/");
 				toast(response.data.message);

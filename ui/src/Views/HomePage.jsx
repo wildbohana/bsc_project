@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axiosInstance from '../Services/axiosInstance';
@@ -11,7 +11,6 @@ function HomePage() {
 	const [topics, setTopics] = useState([]);
 	const [showMyTopics, setShowMyTopics] = useState(false);
 	const [sortCriteria, setSortCriteria] = useState('');
-	const [sortOrder, setSortOrder] = useState('asc');
 	const [searchQuery, setSearchQuery] = useState('');
 
 	const navigateToCreateTopic = () => {
@@ -20,14 +19,6 @@ function HomePage() {
 
 	const navigateToTopic = (topicId) => {
 		navigate(`/topic/${topicId}`);
-	};
-
-	const handleApiResponse = (updatedTopic, isDelete = false, deleteId = null) => {
-		setTopics((prevTopics) =>
-			isDelete
-				? prevTopics.filter((topic) => topic._id !== deleteId)
-				: prevTopics.map((topic) => (topic._id === updatedTopic._id ? updatedTopic : topic))
-		);
 	};
 
 	const filteredTopics = () => {
@@ -55,10 +46,10 @@ function HomePage() {
 		console.log(`${action} Topic ID: ${topicId}`);
 	
 		try {
-			const endpoint = `topic/delete`;
+			const endpoint = `/topics/delete`;
 			const response = await axiosInstance.post(endpoint, { topicId });
 			if (response.status === 200) {
-				fetchTopics();
+				await fetchTopics();
 				toast(response.data.message);
 			}
 		} catch (error) {
@@ -71,12 +62,10 @@ function HomePage() {
 		console.log(`${action} Topic ID: ${topicId}`);
 
 		try {
-			const endpoint = `/topic/vote/${action}`;
-			//console.log(endpoint);
-			//console.log({topicId});
+			const endpoint = `/topics/${action}`;
 			const response = await axiosInstance.post(endpoint, { topicId });
 			if (response.status === 200) {
-				fetchTopics();
+				await fetchTopics();
 				toast(response.data.message);
 			}
 		} catch (error) {
@@ -89,10 +78,10 @@ function HomePage() {
 		console.log(`${action} Topic ID: ${topicId}`);
 
 		try {
-			const endpoint = `/topic/lock`;
+			const endpoint = `/topics/lock`;
 			const response = await axiosInstance.post(endpoint, { topicId });
 			if (response.status === 200) {
-				fetchTopics();
+				await fetchTopics();
 				toast(response.data.message);
 			}
 		} catch (error) {
@@ -105,10 +94,10 @@ function HomePage() {
 		console.log(`${action} Topic ID: ${topicId}`);
 	
 		try {
-			const endpoint = `/topic/subscribe`;
+			const endpoint = `/topics/subscribe`;
 			const response = await axiosInstance.post(endpoint, { topicId });
 			if (response.status === 200) {
-				fetchTopics();
+				await fetchTopics();
 			}
 		} catch (error) {
 			toast("Error happened");
@@ -118,9 +107,9 @@ function HomePage() {
 
 	const fetchTopics = async () => {
 		try {
-			const response = await axiosInstance.get('topics');	
+			const response = await axiosInstance.get('/topics/all');	
 			console.log(response.data);
-			setTopics(response.data);
+			setTopics(response.data["topics"]);
 		} catch (error) {
 			toast("Error fetching data.");
 			console.error("Error fetching data: ", error);
@@ -202,7 +191,7 @@ function HomePage() {
 								onClick={(e) => {
 									e.stopPropagation(); 
 									handleLock(topic._id, "lock")}}>
-								Delete
+								Lock
 							</button>
 							<button
 								className="control-button delete-button"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import axiosInstance from "../Services/axiosInstance";
 
@@ -29,12 +29,17 @@ function RegisterForm() {
 		};
 
 		try {
-			// TODO promeniti ???
-			const response = await axiosInstance.post("/register", {...userData});
-			console.log(response.data.message)
-			navigate("/login")
+			const response = await axiosInstance.post("/users/register", {...userData});
+			console.log(response.data.message);
+			if (response.status === 200) {
+				navigate("/login")
+			} else {
+				console.log("That email has already been taken!");
+				toast("That email has already been taken!");
+			}
 		} catch (error) {
 			console.error("There was an error!", error);
+			toast(error.message);
 		}
 	};
 

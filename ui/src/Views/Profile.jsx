@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axiosInstance from '../Services/axiosInstance';
@@ -16,14 +16,23 @@ function Profile() {
 	});
 
 	useEffect(() => {
-		axiosInstance.get('/profile').then(response => {
-			setProfile(response.data["profile"]);
-			console.log(response.data["profile"]);
-		}).catch(error => {
-			console.error("Error fetching profile: ", error);
-			toast("Error fetching profile");
-		});
+		fetchProfile();
 	}, []);
+
+	const fetchProfile = async() =>  {
+		try {
+			const response = await axiosInstance.get('/users/profile');
+			console.log(response.data);
+			if (response.status === 200) {
+				setProfile(response.data.profile);
+			} else {
+				toast("Bad request");
+			}
+		} catch (error) {
+			console.error("Error fetching profile: ", error);
+			toast("Error fetching profile.");
+		}
+	}
 
 	const handleInputChange = (e) => {
 		setProfile({
@@ -36,9 +45,10 @@ function Profile() {
 		e.preventDefault();
 		try {
 			console.log(profile);
-			const response = await axiosInstance.post('/profile', profile);
+			const response = await axiosInstance.post('/users/profile', profile);
 			if (response.status === 200) {
 				toast("Profile updated successfully");
+				await fetchProfile();
 			}
 		} catch (error) {
 			toast("Error updating profile");
