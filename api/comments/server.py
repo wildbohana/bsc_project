@@ -115,14 +115,6 @@ def comment_add():
     comment_id = insert_result.inserted_id
     comment = comments.find_one({"_id": comment_id})
 
-    # if "subscribers" in topic and topic["subscribers"]:
-    #     subscriber_ids = [ObjectId(subscriber_id) for subscriber_id in topic["subscribers"]]
-    #     subscriber_profiles = user_profiles.find({"_id": {"$in": subscriber_ids}})
-
-    #     for profile in subscriber_profiles:
-    #         if "email" in profile:
-    #             executor.submit(send_email, profile["email"], topic["title"], comment["content"], comment["ownerFullName"])
-
     if comment is not None:
         return jsonify({"message": "Comment created", "comment": serialize_doc(comment)}), 200
     else:
@@ -133,7 +125,6 @@ def comment_add():
 @jwt_required()
 def get_all_comments_for_topic(topic_id):
     try:
-
         user_id = get_jwt_identity()
         comments_list = list(comments.find({"topicId": ObjectId(topic_id)}))
         comments_list = [serialize_doc(comment) for comment in comments_list]
@@ -141,7 +132,26 @@ def get_all_comments_for_topic(topic_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# TODO comment delete
+# Function added for v2 of microservice
+# DELETE TOPIC (if you are owner)
+@app.route('/comments/delete/', methods=['POST'])
+@jwt_required()
+def comment_delete():
+    user_id = get_jwt_identity()
+
+    try:
+        validate(instance=request.json, schema=comment_id_only_schema)
+    except ValidationError as e:
+        return jsonify({"error": str(e)}), 400
+    commentId = request.json['commentId']
+
+    comment = comments.find_one({"_id": ObjectId(commentId)})
+	
+    try:
+        comments.delete_one({"_id": ObjectId(commentId)})
+        return jsonify({"message": "Comment deleted"}), 200
+    except Exception as e:
+        return jsonify({"error deleting comment": str(e)}), 500
 
 
 # RUN SERVICE
