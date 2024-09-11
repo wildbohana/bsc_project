@@ -20,7 +20,7 @@ CORS(app)
 jwt = JWTManager(app)
 
 # MongoDB connection
-client = MongoClient('mongo-service', 27017)
+client = MongoClient('mongo-users-service', 27017)
 #client = MongoClient("host.minikube.internal", 27017)
 db_credentials = client.credentials
 db_profiles = client.profiles

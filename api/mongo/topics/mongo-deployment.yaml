@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-topics-deploy
+spec:
+  selector:
+    matchLabels:
+      app: mongo-topics
+  template:
+    metadata:
+      labels:
+        app: mongo-topics
+    spec:
+      containers:
+        - name: mongo-topics
+          image: mongo:6.0.5
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-topics-volume
+              mountPath: /data/db
+      volumes:
+        - name: mongo-topics-volume
+          persistentVolumeClaim:
+            claimName: mongo-topics-pvc

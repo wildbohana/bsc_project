@@ -19,7 +19,7 @@ CORS(app)
 jwt = JWTManager(app)
 
 # MongoDB connection
-client = MongoClient('mongo-service', 27017)
+client = MongoClient('mongo-comments-service', 27017)
 db_comments = client.comments
 comments = db_comments["comments"]
 

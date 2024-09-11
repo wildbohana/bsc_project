@@ -20,12 +20,10 @@ spec:
     spec:
       containers:
         - name: comments-cont
-          image: wildbohana/comments:2.0
+          image: wildbohana/comments:4.0
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
           envFrom:
-            - configMapRef:
-                name: comments-configmap
             - secretRef:
                 name: comments-secret

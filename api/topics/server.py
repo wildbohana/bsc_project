@@ -19,7 +19,7 @@ CORS(app)
 jwt = JWTManager(app)
 
 # MongoDB connection
-client = MongoClient('mongo-service', 27017)
+client = MongoClient('mongo-topics-service', 27017)
 db_topic = client.topics
 topics = db_topic["topics"]
 

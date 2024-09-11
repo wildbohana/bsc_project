@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-deploy
+  name: mongo-users-deploy
 spec:
   selector:
     matchLabels:
-      app: mongo
+      app: mongo-users
   template:
     metadata:
       labels:
-        app: mongo
+        app: mongo-users
     spec:
       containers:
-        - name: mongo
+        - name: mongo-users
           image: mongo:6.0.5
           resources:
             limits:
@@ -21,9 +21,9 @@ spec:
           ports:
             - containerPort: 27017
           volumeMounts:
-            - name: mongo-volume
+            - name: mongo-users-volume
               mountPath: /data/db
       volumes:
-        - name: mongo-volume
+        - name: mongo-users-volume
           persistentVolumeClaim:
-            claimName: mongo-pvc
+            claimName: mongo-users-pvc

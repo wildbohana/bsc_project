@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: topics-configmap
-data:
-  PLACEHOLDER: "none"

@@ -31,7 +31,7 @@ function RegisterForm() {
 		try {
 			const response = await axiosInstance.post("/users/register", {...userData});
 			console.log(response.data.message);
-			if (response.status === 200) {
+			if (response.status === 201) {
 				navigate("/login")
 			} else {
 				console.log("That email has already been taken!");

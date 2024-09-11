@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axiosInstance from '../Services/axiosInstance';
@@ -136,7 +136,7 @@ function TopicPage() {
 
 	const handleDeleteComment = async (commentId) => {
 		try {
-			const endpoint = `comments/delete`;
+			const endpoint = `/comments/delete`;
 			const response = await axiosInstance.post(endpoint, { commentId });
 			if (response.status === 200) {
 				//navigate("/");
@@ -148,6 +148,7 @@ function TopicPage() {
 			fetchComments();
 		} catch (error) {
 			toast("Error Happened");
+			console.log(error);
 		}
 	};
 
