@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: users-cont
-          image: wildbohana/users:2.0
+          image: wildbohana/users:1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

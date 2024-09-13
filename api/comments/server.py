@@ -137,8 +137,6 @@ def get_all_comments_for_topic(topic_id):
 @app.route('/comments/delete/', methods=['POST'])
 @jwt_required()
 def comment_delete():
-    user_id = get_jwt_identity()
-
     try:
         validate(instance=request.json, schema=comment_id_only_schema)
     except ValidationError as e:
@@ -146,6 +144,8 @@ def comment_delete():
     commentId = request.json['commentId']
 
     comment = comments.find_one({"_id": ObjectId(commentId)})
+    if comment is None:
+        return jsonify({"error deleting comment": str(e)}), 400
 	
     try:
         comments.delete_one({"_id": ObjectId(commentId)})
